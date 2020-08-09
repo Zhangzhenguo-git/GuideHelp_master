@@ -7,14 +7,18 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.widget.RelativeLayout;
 
+
+import androidx.annotation.Nullable;
 
 import com.pack.guide.R;
 import com.pack.guide.listener.AnimationListenerAdapter;
@@ -26,7 +30,7 @@ import java.util.List;
  * <p>
  * Created on 2017/7/27.
  */
-public class GuideLayout extends RelativeLayout implements ViewTreeObserver.OnGlobalLayoutListener{
+public class GuideLayout extends RelativeLayout{
 
     public static final int DEFAULT_BACKGROUND_COLOR = 0xb2000000;
 
@@ -69,18 +73,6 @@ public class GuideLayout extends RelativeLayout implements ViewTreeObserver.OnGl
         int backgroundColor = guidePage.getBackgroundColor();
         canvas.drawColor(backgroundColor == 0 ? DEFAULT_BACKGROUND_COLOR : backgroundColor);
         drawHightLights(canvas);
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        super.onLayout(changed, l, t, r, b);
-
     }
 
     private void drawHightLights(Canvas canvas) {
@@ -167,13 +159,15 @@ public class GuideLayout extends RelativeLayout implements ViewTreeObserver.OnGl
         }
     }
 
-    @Override
-    public void onGlobalLayout() {
-
-    }
 
     public interface OnGuideLayoutDismissListener {
         void onGuideLayoutDismiss(GuideLayout guideLayout);
     }
 
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return super.onTouchEvent(event);
+
+    }
 }

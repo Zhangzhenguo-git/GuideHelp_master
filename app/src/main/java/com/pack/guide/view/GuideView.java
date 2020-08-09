@@ -17,19 +17,16 @@ import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import androidx.annotation.RequiresApi;
-
 import com.pack.guide.R;
 
 import java.util.List;
 
 /**
- * @author Zhangzhenguo
- * @create 2020/8/7
- * @Email 18311371235@163.com
- * @Describe
+ * author : Majunbao
+ * date : 2019/3/4 16:32
+ * description :App第一次打开功能蒙版 引导
  */
-class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlobalLayoutListener {
+public class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlobalLayoutListener {
     private final String TAG = getClass().getSimpleName();
     private Context mContent;
     private List<View> mViews;
@@ -208,7 +205,6 @@ class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlobalLayou
         this.center = center;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public void hide() {
         Log.v(TAG, "hide");
         if (customGuideView != null) {
@@ -219,6 +215,9 @@ class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlobalLayou
         }
     }
 
+    /**
+     * 显示
+     */
     public void show() {
         Log.v(TAG, "show");
         if (hasShown())
@@ -227,8 +226,8 @@ class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlobalLayou
         if (targetView != null) {
             targetView.getViewTreeObserver().addOnGlobalLayoutListener(this);
         }
-
-        this.setBackgroundResource(R.color.colorAccent);
+//        设置文字高亮
+        this.setBackgroundResource(R.color.white);
 
         ((FrameLayout) ((Activity) mContent).getWindow().getDecorView()).addView(this);
         first = false;
@@ -366,7 +365,7 @@ class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlobalLayou
         if (backgroundColor != 0)
             bgPaint.setColor(backgroundColor);
         else
-            bgPaint.setColor(getResources().getColor(R.color.colorPrimary));
+            bgPaint.setColor(getResources().getColor(R.color.ll));
 
         // 绘制屏幕背景
         temp.drawRect(0, 0, temp.getWidth(), temp.getHeight(), bgPaint);
@@ -421,7 +420,6 @@ class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlobalLayou
     private void setClickInfo() {
         final boolean exit = onClickExit;
         setOnClickListener(new OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
                 if (onclickListener != null) {
@@ -463,7 +461,7 @@ class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlobalLayou
     /**
      * 定义GuideView相对于targetView的方位，共八种。不设置则默认在targetView下方
      */
-    enum Direction {
+    public enum Direction {
         LEFT, TOP, RIGHT, BOTTOM,
         LEFT_TOP, LEFT_BOTTOM,
         RIGHT_TOP, RIGHT_BOTTOM
@@ -472,7 +470,7 @@ class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlobalLayou
     /**
      * 定义目标控件的形状，共3种。圆形，椭圆，带圆角的矩形（可以设置圆角大小），不设置则默认是圆形
      */
-    enum MyShape {
+    public enum MyShape {
         CIRCULAR, ELLIPSE, RECTANGULAR
     }
 

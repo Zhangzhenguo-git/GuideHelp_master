@@ -1,24 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
-
-    <TextView
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+    </data>
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="相关描述相关描述相关描述相关描述相关描述相关描述相关描述相关描述相关描述">
-    </TextView>
-    <TextView
-        android:id="@+id/viewGuide"
-        android:layout_width="100dp"
-        android:layout_height="60dp"
-        android:background="@drawable/guide_frame"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="100dp"
-        android:gravity="center"
-        android:text="知道了">
-    </TextView>
-</RelativeLayout>
+        android:layout_height="match_parent"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        >
+        <ImageView
+            android:id="@+id/ivInstructions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/point">
+        </ImageView>
+        <TextView
+            android:id="@+id/tvDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_toRightOf="@id/ivInstructions"
+            android:text="相关描述相关描述相关描述相关描述相关描述相关描述相关描述相关描述相关描述">
+        </TextView>
+        <TextView
+            android:id="@+id/viewGuide"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:background="@drawable/guide_frame"
+            android:layout_below="@id/tvDetails"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="知道了">
+        </TextView>
+    </RelativeLayout>
+</layout>

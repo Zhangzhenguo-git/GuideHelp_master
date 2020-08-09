@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pack.guide.databinding.ActivityMainBinding;
 import com.pack.guide.listener.OnGuideChangedListener;
@@ -17,8 +18,11 @@ import com.pack.guide.listener.OnLayoutInflatedListener;
 import com.pack.guide.listener.OnPageChangedListener;
 import com.pack.guide.view.Controller;
 import com.pack.guide.view.GuidePage;
+import com.pack.guide.view.GuideUserView;
+import com.pack.guide.view.GuideView;
 import com.pack.guide.view.HighLight;
 import com.pack.guide.view.NewbieGuide;
+import com.xuexiang.xui.widget.guidview.FocusShape;
 import com.xuexiang.xui.widget.guidview.GuideCaseView;
 import com.xuexiang.xui.widget.guidview.OnViewInflateListener;
 
@@ -29,17 +33,42 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding= DataBindingUtil.setContentView(this,R.layout.activity_main);
-        new GuideCaseView.Builder(this)
-                .focusBorderColor(getResources().getColor(R.color.colorAccent))
-                .focusBorderSize(5)
-                .focusOn(binding.tvGuideView)
-                .focusRectAtPosition((int)(binding.tvGuideView.getX()),(int)binding.tvGuideView.getX(),binding.tvGuideView.getWidth(),binding.tvGuideView.getHeight())
-                .customView(R.layout.guide_title_view, new OnViewInflateListener() {
-                    @Override
-                    public void onViewInflated(View view) {
+//        new GuideCaseView.Builder(this)
+//                .focusBorderColor(getResources().getColor(R.color.white))
+//                .focusBorderSize(5)
+//                .focusOn(binding.tvGuideView)
+//                .closeOnTouch(false)
+////                设置矩形
+//                .focusShape(FocusShape.ROUNDED_RECTANGLE)
+//                .focusRectAtPosition(binding.tvGuideView.getBottom(),binding.tvGuideView.getWidth()+binding.tvGuideView.getBottom(),binding.tvGuideView.getWidth(),binding.tvGuideView.getHeight())
+//                .customView(R.layout.guide_title_view, new OnViewInflateListener() {
+//                    @Override
+//                    public void onViewInflated(View view) {
+//
+//                    }
+//                })
+//                .show();
 
+//        View contentView=View.inflate(this,R.layout.guide_title_view,null);
+//        GuideView.Builder.newInstance(this)
+////                .setRadius(50)
+////                .setBgColor(getResources().getColor(R.color.colorAccent))
+////                .setDirction(GuideView.Direction.BOTTOM)
+//                .setCustomGuideView(contentView)
+//                .setTargetView(binding.tvGuideView)
+//                .setShape(GuideView.MyShape.RECTANGULAR)
+//                .build().show();
+        binding.getRoot().setOnClickListener(null);
+        GuideUserView.show(false, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Toast.makeText(MainActivity.this, "1111", Toast.LENGTH_SHORT).show();
                     }
-                }).show();
+                }, MainActivity.this,
+                new GuideUserView.ViewEntity(binding.tvGuideView, R.layout.guide_title_view, GuideUserView.Direction.BOTTOM,false),
+                new GuideUserView.ViewEntity(binding.tvGuideView1, R.layout.guide_title_view, GuideUserView.Direction.BOTTOM,false));
+//        showGuide();
     }
 
     public void showGuide() {
@@ -65,13 +94,7 @@ public class MainActivity extends AppCompatActivity {
                         //引导层消失（多页切换不会触发）
                     }
                 })
-                .setOnPageChangedListener(new OnPageChangedListener() {
-                    @Override
-                    public void onPageChanged(int page) {
-                        //引导页切换，page为当前页位置，从0开始
-                    }
-                })
-                .alwaysShow(false)//是否每次都显示引导层，默认false，只显示一次
+                .alwaysShow(true)//是否每次都显示引导层，默认false，只显示一次
                 .addGuidePage(//添加一页引导页
                         GuidePage.newInstance()//创建一个实例
 //                                设置要添加图层引导的View、圆角、最终样式
