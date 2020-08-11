@@ -5,6 +5,8 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="white">#FFFFFF</color>
     <color name="ll">#ffffffff</color>
-    <color name="color_guide_buttom">#4378FF</color>
-    <color name="color_guide_translucent">#7F000000</color>
+    <color name="science_color_guide_buttom">#4378FF</color>
+    <color name="science_color_guide_translucent">#7F000000</color>
+
+    <color name="science_color_guide_backgroundcolor">#fff</color>
 </resources>

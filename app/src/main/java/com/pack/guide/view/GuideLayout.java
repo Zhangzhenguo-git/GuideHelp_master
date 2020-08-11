@@ -95,12 +95,12 @@ public class GuideLayout extends RelativeLayout{
                         break;
                     case ROUND_RECTANGLE_DASHGAP:
                         canvas.drawRoundRect(rectF, highLight.getRound(), highLight.getRound(), mPaint);
-                        mPaint=new Paint();
-                        mPaint.setStyle(Paint.Style.STROKE);
-                        mPaint.setColor(getResources().getColor(R.color.white));
-                        mPaint.setStrokeWidth(3);
-                        mPaint.setPathEffect(highLight.getEffect());
-                        canvas.drawRoundRect(rectFExternal, highLight.getRound(), highLight.getRound(), mPaint);
+//                        mPaint=new Paint();
+//                        mPaint.setStyle(Paint.Style.STROKE);
+//                        mPaint.setColor(getResources().getColor(R.color.white));
+//                        mPaint.setStrokeWidth(3);
+//                        mPaint.setPathEffect(highLight.getEffect());
+//                        canvas.drawRoundRect(rectFExternal, highLight.getRound(), highLight.getRound(), mPaint);
                         break;
                     case RECTANGLE:
                         canvas.drawRect(rectF, mPaint);

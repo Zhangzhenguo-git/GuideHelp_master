@@ -4,9 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import android.os.Bundle;
-import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.style.DynamicDrawableSpan;
 import android.text.style.ImageSpan;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -31,22 +29,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding= DataBindingUtil.setContentView(this,R.layout.activity_main);
 
+        binding.tvGuideView1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                guide();
+                //        showGuide();
+            }
+        });
+    }
 
-//        GuideUserView.show(false, new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//
-//                        Toast.makeText(MainActivity.this, "1111", Toast.LENGTH_SHORT).show();
-//                    }
-//                }, MainActivity.this,
-//                new GuideUserView.ViewEntity(binding.tvGuideView, R.layout.guide_title_view, GuideUserView.Direction.BOTTOM,false),
-//                new GuideUserView.ViewEntity(binding.tvGuideView1, R.layout.guide_title_view, GuideUserView.Direction.BOTTOM,false));
 
-//        图文混排并水平居中
+    private void guide(){
+        //        图文混排并水平居中
         String s="1、长按图标出现删除按钮  ，点击即可删除入口；\n2、删除后，点击加号＋可添加常用应用。";
         SpannableString spannableString=new SpannableString(s);
-        ImageSpan imageSpan=new ImageSpan(this,R.mipmap.science_delete, ImageSpan.ALIGN_CENTER);
-        spannableString.setSpan(imageSpan,12,13, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        ImageSpan imageSpan=new ImageSpan(this,R.mipmap.science_delete);
+        spannableString.setSpan(imageSpan,12,13,ImageSpan.ALIGN_CENTER);
+
+        Animation enterAnimation = new AlphaAnimation(0f, 1f);
+        enterAnimation.setDuration(600);
+        enterAnimation.setFillAfter(true);
+
+        Animation exitAnimation = new AlphaAnimation(1f, 0f);
+        exitAnimation.setDuration(100);
+        exitAnimation.setFillAfter(true);
+
         new GuideUserView.Builder(this)
                 .setTargetView(binding.tvGuideView)
                 .setRound(20)
@@ -55,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
                 .setDirection(GuideUserView.Direction.BOTTOM)
                 .setLayoutID(R.layout.guide_title_view)
                 .setSpannableName(spannableString)
+                .setEnterAnimation(enterAnimation)
+                .setExitAnimation(exitAnimation)
                 .setIntercpt(false)
                 .setIsOnlyShowOne(false)
                 .setOnClickListener(new View.OnClickListener() {
@@ -64,8 +73,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .show();
-
-//        showGuide();
     }
 
     public void showGuide() {

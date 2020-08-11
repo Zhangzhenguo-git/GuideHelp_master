@@ -2,37 +2,37 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
     </data>
-    <LinearLayout
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
+        android:id="@+id/guide_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <ImageView
-            android:id="@+id/ivInstructions"
-            android:layout_width="17dp"
-            android:layout_height="70dp"
-            android:layout_gravity="left"
-            android:src="@mipmap/science_point">
-        </ImageView>
+        android:layout_height="match_parent">
         <TextView
             android:id="@+id/tvGuideMessage"
             android:layout_width="261dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_marginTop="60dp"
+            android:layout_centerHorizontal="true"
             android:textColor="@color/white"
             android:textSize="22sp">
         </TextView>
-
+        <ImageView
+            android:id="@+id/ivInstructions"
+            android:layout_width="17dp"
+            android:layout_height="70dp"
+            android:layout_toLeftOf="@id/tvGuideMessage"
+            android:src="@mipmap/science_point">
+        </ImageView>
         <TextView
             android:id="@+id/viewGuide"
             android:layout_width="156dp"
             android:layout_height="50dp"
             android:layout_marginTop="68.5dp"
-            android:layout_marginLeft="50dp"
-            android:background="@drawable/guide_frame"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/tvGuideMessage"
+            android:background="@drawable/science_guide_frame"
             android:gravity="center"
-            android:textColor="@color/color_guide_buttom"
+            android:textColor="@color/science_color_guide_buttom"
             android:textSize="20sp"
             android:text="知道了"></TextView>
-    </LinearLayout>
+    </RelativeLayout>
 </layout>
