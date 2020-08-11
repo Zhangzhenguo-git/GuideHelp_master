@@ -2,36 +2,37 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
     </data>
-    <RelativeLayout
+    <LinearLayout
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
-        >
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
         <ImageView
             android:id="@+id/ivInstructions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/point">
+            android:layout_width="17dp"
+            android:layout_height="70dp"
+            android:layout_gravity="left"
+            android:src="@mipmap/science_point">
         </ImageView>
         <TextView
-            android:id="@+id/tvDetails"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvGuideMessage"
+            android:layout_width="261dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_toRightOf="@id/ivInstructions"
-            android:text="相关描述相关描述相关描述相关描述相关描述相关描述相关描述相关描述相关描述">
+            android:layout_marginLeft="8dp"
+            android:textColor="@color/white"
+            android:textSize="22sp">
         </TextView>
+
         <TextView
             android:id="@+id/viewGuide"
-            android:layout_width="100dp"
-            android:layout_height="60dp"
+            android:layout_width="156dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="68.5dp"
+            android:layout_marginLeft="50dp"
             android:background="@drawable/guide_frame"
-            android:layout_below="@id/tvDetails"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="知道了">
-        </TextView>
-    </RelativeLayout>
+            android:textColor="@color/color_guide_buttom"
+            android:textSize="20sp"
+            android:text="知道了"></TextView>
+    </LinearLayout>
 </layout>

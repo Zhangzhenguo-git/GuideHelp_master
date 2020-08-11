@@ -128,7 +128,6 @@ public class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlob
     public GuideView(Context context) {
         super(context);
         this.mContent = context;
-        init();
     }
 
     public int getRadius() {
@@ -178,8 +177,6 @@ public class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlob
         }
     }
 
-    private void init() {
-    }
 
     public void showOnce() {
         if (targetView != null) {

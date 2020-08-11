@@ -3,9 +3,11 @@ package com.pack.guide;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.DynamicDrawableSpan;
+import android.text.style.ImageSpan;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -15,16 +17,11 @@ import android.widget.Toast;
 import com.pack.guide.databinding.ActivityMainBinding;
 import com.pack.guide.listener.OnGuideChangedListener;
 import com.pack.guide.listener.OnLayoutInflatedListener;
-import com.pack.guide.listener.OnPageChangedListener;
 import com.pack.guide.view.Controller;
 import com.pack.guide.view.GuidePage;
 import com.pack.guide.view.GuideUserView;
-import com.pack.guide.view.GuideView;
 import com.pack.guide.view.HighLight;
 import com.pack.guide.view.NewbieGuide;
-import com.xuexiang.xui.widget.guidview.FocusShape;
-import com.xuexiang.xui.widget.guidview.GuideCaseView;
-import com.xuexiang.xui.widget.guidview.OnViewInflateListener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,41 +30,41 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding= DataBindingUtil.setContentView(this,R.layout.activity_main);
-//        new GuideCaseView.Builder(this)
-//                .focusBorderColor(getResources().getColor(R.color.white))
-//                .focusBorderSize(5)
-//                .focusOn(binding.tvGuideView)
-//                .closeOnTouch(false)
-////                设置矩形
-//                .focusShape(FocusShape.ROUNDED_RECTANGLE)
-//                .focusRectAtPosition(binding.tvGuideView.getBottom(),binding.tvGuideView.getWidth()+binding.tvGuideView.getBottom(),binding.tvGuideView.getWidth(),binding.tvGuideView.getHeight())
-//                .customView(R.layout.guide_title_view, new OnViewInflateListener() {
-//                    @Override
-//                    public void onViewInflated(View view) {
-//
-//                    }
-//                })
-//                .show();
 
-//        View contentView=View.inflate(this,R.layout.guide_title_view,null);
-//        GuideView.Builder.newInstance(this)
-////                .setRadius(50)
-////                .setBgColor(getResources().getColor(R.color.colorAccent))
-////                .setDirction(GuideView.Direction.BOTTOM)
-//                .setCustomGuideView(contentView)
-//                .setTargetView(binding.tvGuideView)
-//                .setShape(GuideView.MyShape.RECTANGULAR)
-//                .build().show();
-        binding.getRoot().setOnClickListener(null);
-        GuideUserView.show(false, new View.OnClickListener() {
+
+//        GuideUserView.show(false, new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                        Toast.makeText(MainActivity.this, "1111", Toast.LENGTH_SHORT).show();
+//                    }
+//                }, MainActivity.this,
+//                new GuideUserView.ViewEntity(binding.tvGuideView, R.layout.guide_title_view, GuideUserView.Direction.BOTTOM,false),
+//                new GuideUserView.ViewEntity(binding.tvGuideView1, R.layout.guide_title_view, GuideUserView.Direction.BOTTOM,false));
+
+//        图文混排并水平居中
+        String s="1、长按图标出现删除按钮  ，点击即可删除入口；\n2、删除后，点击加号＋可添加常用应用。";
+        SpannableString spannableString=new SpannableString(s);
+        ImageSpan imageSpan=new ImageSpan(this,R.mipmap.science_delete, ImageSpan.ALIGN_CENTER);
+        spannableString.setSpan(imageSpan,12,13, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        new GuideUserView.Builder(this)
+                .setTargetView(binding.tvGuideView)
+                .setRound(20)
+                .setTargetSize(null)
+                .setShapeType(GuideUserView.Shape.ROUND_RECTANGLE_DASHGAP)
+                .setDirection(GuideUserView.Direction.BOTTOM)
+                .setLayoutID(R.layout.guide_title_view)
+                .setSpannableName(spannableString)
+                .setIntercpt(false)
+                .setIsOnlyShowOne(false)
+                .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-                        Toast.makeText(MainActivity.this, "1111", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "11", Toast.LENGTH_SHORT).show();
                     }
-                }, MainActivity.this,
-                new GuideUserView.ViewEntity(binding.tvGuideView, R.layout.guide_title_view, GuideUserView.Direction.BOTTOM,false),
-                new GuideUserView.ViewEntity(binding.tvGuideView1, R.layout.guide_title_view, GuideUserView.Direction.BOTTOM,false));
+                })
+                .show();
+
 //        showGuide();
     }
 
@@ -99,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                         GuidePage.newInstance()//创建一个实例
 //                                设置要添加图层引导的View、圆角、最终样式
                                 .addHighLight(binding.tvGuideView, 20,HighLight.Shape.ROUND_RECTANGLE_DASHGAP)
-                                .setLayoutRes(R.layout.guide_title_view)//设置引导页布局
+//                                .setLayoutRes(R.layout.guide_title_view)//设置引导页布局
                                 .setOnLayoutInflatedListener(new OnLayoutInflatedListener() {
                                     @Override
                                     public void onLayoutInflated(View view) {
