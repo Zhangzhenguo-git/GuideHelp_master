@@ -20,6 +20,7 @@ import com.pack.guide.view.GuidePage;
 import com.pack.guide.view.GuideUserView;
 import com.pack.guide.view.HighLight;
 import com.pack.guide.view.NewbieGuide;
+import com.xuexiang.xui.widget.guidview.GuideCaseView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,21 +37,22 @@ public class MainActivity extends AppCompatActivity {
                 //        showGuide();
             }
         });
+        guide();
     }
 
 
     private void guide(){
         //        图文混排并水平居中
         String s="1、长按图标出现删除按钮  ，点击即可删除入口；\n2、删除后，点击加号＋可添加常用应用。";
-        SpannableString spannableString=new SpannableString(s);
+        final SpannableString spannableString=new SpannableString(s);
         ImageSpan imageSpan=new ImageSpan(this,R.mipmap.science_delete);
         spannableString.setSpan(imageSpan,12,13,ImageSpan.ALIGN_CENTER);
 
-        Animation enterAnimation = new AlphaAnimation(0f, 1f);
+        final Animation enterAnimation = new AlphaAnimation(0f, 1f);
         enterAnimation.setDuration(600);
         enterAnimation.setFillAfter(true);
 
-        Animation exitAnimation = new AlphaAnimation(1f, 0f);
+        final Animation exitAnimation = new AlphaAnimation(1f, 0f);
         exitAnimation.setDuration(100);
         exitAnimation.setFillAfter(true);
 
@@ -65,10 +67,29 @@ public class MainActivity extends AppCompatActivity {
                 .setEnterAnimation(enterAnimation)
                 .setExitAnimation(exitAnimation)
                 .setIntercpt(false)
-                .setIsOnlyShowOne(false)
+                .setIsOnlyShowOne(true)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        new GuideUserView.Builder(MainActivity.this)
+                                .setTargetView(binding.tvGuideView1)
+                                .setRound(20)
+                                .setTargetSize(null)
+                                .setShapeType(GuideUserView.Shape.ROUND_RECTANGLE_DASHGAP)
+                                .setDirection(GuideUserView.Direction.BOTTOM)
+                                .setLayoutID(R.layout.guide_title_view)
+                                .setSpannableName(spannableString)
+                                .setEnterAnimation(enterAnimation)
+                                .setExitAnimation(exitAnimation)
+                                .setIntercpt(false)
+                                .setIsOnlyShowOne(true)
+                                .setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Toast.makeText(MainActivity.this, "11", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .show();
                         Toast.makeText(MainActivity.this, "11", Toast.LENGTH_SHORT).show();
                     }
                 })

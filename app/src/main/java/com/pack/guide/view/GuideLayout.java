@@ -61,8 +61,6 @@ public class GuideLayout extends RelativeLayout{
         mPaint.setMaskFilter(new BlurMaskFilter(10, BlurMaskFilter.Blur.INNER));
         //关闭当前view的硬件加速
         setLayerType(LAYER_TYPE_SOFTWARE, null);
-        setFocusable(false);
-        setClickable(true);
         //ViewGroup默认设定为true，会使onDraw方法不执行，如果复写了onDraw(Canvas)方法，需要清除此标记
         setWillNotDraw(false);
     }
