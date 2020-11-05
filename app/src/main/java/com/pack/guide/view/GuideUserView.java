@@ -294,7 +294,7 @@ public class GuideUserView extends RelativeLayout implements ViewTreeObserver.On
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (mOnClickCallback != null) {
-            if (mOnClickExit) {
+            if (!mOnClickExit) {
                 removeGuideView();
                 mOnClickCallback.onClickedGuideView();
             }
@@ -329,7 +329,7 @@ public class GuideUserView extends RelativeLayout implements ViewTreeObserver.On
         switch (v.getId()){
             case R.id.tvConfirm:
                 if (mOnClickCallback != null) {
-                    if (!mOnClickExit) {
+                    if (mOnClickExit) {
                         mOnClickCallback.onClickBtView();
                         System.out.println("执行12312312312312312");
                         removeGuideView();

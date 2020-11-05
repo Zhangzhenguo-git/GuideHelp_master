@@ -1,40 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
-        <TextView
-            android:id="@+id/tvGuideView"
-            android:layout_width="200dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="100dp"
-            android:text="Hello World!"
+        <Button
+            android:id="@+id/tvGuideViewBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="下面-RestartShow"
+            android:textAllCaps="false"
             android:gravity="center"
             android:textSize="30sp"
             android:textColor="@color/colorPrimary"
-            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-        <TextView
-            android:id="@+id/tvGuideView1"
-            android:layout_width="200dp"
-            android:layout_height="80dp"
-            android:text="重新显示"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <Button
+            android:id="@+id/tvGuideViewLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="150dp"
             android:gravity="center"
+            android:textAllCaps="false"
+            android:text="左侧-RestartShow"
+            android:textColor="@color/colorPrimary"
+            android:textSize="30sp"
+            app:layout_constraintTop_toBottomOf="@id/tvGuideViewBottom"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintVertical_bias="0.242" />
+
+        <Button
+            android:id="@+id/tvGuideViewRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="右侧-RestartShow"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:textAllCaps="false"
+            android:layout_marginTop="150dp"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvGuideViewLeft"
+            />
+
+        <Button
+            android:id="@+id/tvGuideViewTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="上面-RestartShow"
+            android:gravity="center"
+            android:textAllCaps="false"
             android:textSize="30sp"
             android:layout_marginTop="90dp"
             android:textColor="@color/colorPrimary"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
