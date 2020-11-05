@@ -27,7 +27,7 @@
             android:id="@+id/tvGuideView1"
             android:layout_width="200dp"
             android:layout_height="80dp"
-            android:text="Hello World!"
+            android:text="重新显示"
             android:gravity="center"
             android:textSize="30sp"
             android:layout_marginTop="90dp"

@@ -23,7 +23,7 @@
             android:src="@mipmap/science_point">
         </ImageView>
         <TextView
-            android:id="@+id/viewGuide"
+            android:id="@+id/tvConfirm"
             android:layout_width="156dp"
             android:layout_height="50dp"
             android:layout_marginTop="68.5dp"

@@ -11,6 +11,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.text.SpannableString;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,7 +26,7 @@ import com.pack.guide.R;
 import com.pack.guide.listener.AnimationListenerAdapter;
 
 
-public class GuideUserView extends RelativeLayout implements ViewTreeObserver.OnGlobalLayoutListener {
+public class GuideUserView extends RelativeLayout implements ViewTreeObserver.OnGlobalLayoutListener , View.OnClickListener {
     private final static String TAG = GuideUserView.class.getSimpleName();
     private OnClickListener mClickListener;
     private Context mContent;
@@ -51,21 +52,24 @@ public class GuideUserView extends RelativeLayout implements ViewTreeObserver.On
     private int mLayoutID;
     // 自定义布局相对于目标View的方向
     private Direction mDirection;
-    // 自定义布局是否允许点击事件
-    private boolean mIntercept;
     //是否只显示一次,默认fase
-    private boolean isOnlyShowOne=false;
-//    进入动画效果
+    private boolean isOnlyShowOne = false;
+    //    进入动画效果
     private Animation enterAnimation;
-//    退出动画效果
+    //    退出动画效果
     private Animation exitAnimation;
-    private FrameLayout mParentView;
 
     //    内矩形与当前布局的外边距
-    private final static int MARGINBOX=30;
+    private final static int MARGINBOX = 30;
     //    内矩形与外虚线矩形的内边距
-    private final static int PADDINGBOX=20;
-    private SpannableString spannableName;
+    private final static int PADDINGBOX = 20;
+    //    图文混排
+    private SpannableString mSpannableName;
+    //    蒙层点击回调
+    private OnClickCallback mOnClickCallback;
+    //    蒙层点击屏幕后退出
+    private boolean mOnClickExit = false;
+
     /**
      * 显示半透明引导图（默认显示一次）
      */
@@ -106,8 +110,9 @@ public class GuideUserView extends RelativeLayout implements ViewTreeObserver.On
         final View view = LayoutInflater.from(mContent).inflate(mLayoutID, this, false);
         LayoutParams params = (LayoutParams) view.getLayoutParams();
         tvGuideMessage = view.findViewById(R.id.tvGuideMessage);
-        tvConfirm = view.findViewById(R.id.viewGuide);
-        tvGuideMessage.setText(spannableName);
+        tvConfirm = view.findViewById(R.id.tvConfirm);
+        tvConfirm.setOnClickListener(this);
+        tvGuideMessage.setText(mSpannableName);
         if (mDirection != null) {
             int width = getWidth();
             int height = getHeight();
@@ -163,7 +168,7 @@ public class GuideUserView extends RelativeLayout implements ViewTreeObserver.On
         // 在目标View周围裁剪出高亮圆圈
         if (targetW == 0 || targetH == 0)
             return;
-        switch (mShape){
+        switch (mShape) {
             // 椭圆
             case ELLIPSE:
                 canvas.drawOval(getEllipse(), mPaint);
@@ -183,61 +188,66 @@ public class GuideUserView extends RelativeLayout implements ViewTreeObserver.On
                 break;
         }
     }
-
     /**
      * 绘制椭圆
-     * @return
      */
-    private RectF getEllipse(){
-        mRect=new RectF();
+    private RectF getEllipse() {
+        mRect = new RectF();
         mRect.left = mCenter[0] - targetW;
         mRect.top = mCenter[1] - targetH;
         mRect.right = mCenter[0] + targetW;
         mRect.bottom = mCenter[1] + targetH;
         return mRect;
     }
+
     /**
      * 绘制实线矩形
+     *
      * @return
      */
-    private RectF getRectangular(){
-        mRect=new RectF();
+    private RectF getRectangular() {
+        mRect = new RectF();
 //        mRect.left = mCenter[0] - targetW;
 //        mRect.top = mCenter[1] - targetH;
 //        mRect.right = mCenter[0] + targetW;
 //        mRect.bottom = mCenter[1] + targetH;
 
-        mRect.left = mCenter[0] - targetW+MARGINBOX+20;
-        mRect.top = mCenter[1] - targetH+MARGINBOX+10;
-        mRect.right = mCenter[0] + targetW-MARGINBOX-20;
-        mRect.bottom = mCenter[1] + targetH-MARGINBOX+20;
+        mRect.left = mCenter[0] - targetW + MARGINBOX + 20;
+        mRect.top = mCenter[1] - targetH + MARGINBOX + 10;
+        mRect.right = mCenter[0] + targetW - MARGINBOX - 20;
+        mRect.bottom = mCenter[1] + targetH - MARGINBOX + 20;
         return mRect;
     }
+
     /**
      * 绘制虚线矩形
+     *
      * @return
      */
-    private RectF getRectangularLine(){
-        mRect=new RectF();
-        mRect.left = mCenter[0] - targetW+PADDINGBOX+20;
-        mRect.top = mCenter[1] - targetH+PADDINGBOX+10;
-        mRect.right = mCenter[0] + targetW-PADDINGBOX-20;
-        mRect.bottom = mCenter[1] + targetH-PADDINGBOX+20;
+    private RectF getRectangularLine() {
+        mRect = new RectF();
+        mRect.left = mCenter[0] - targetW + PADDINGBOX + 20;
+        mRect.top = mCenter[1] - targetH + PADDINGBOX + 10;
+        mRect.right = mCenter[0] + targetW - PADDINGBOX - 20;
+        mRect.bottom = mCenter[1] + targetH - PADDINGBOX + 20;
 
         return mRect;
     }
+
     /**
      * 绘制虚线画笔
+     *
      * @return
      */
-    private Paint getPaintLine(){
-        Paint mPaint=new Paint(Paint.ANTI_ALIAS_FLAG);
+    private Paint getPaintLine() {
+        Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setColor(getResources().getColor(R.color.white));
         mPaint.setStrokeWidth(5);
-        mPaint.setPathEffect(new DashPathEffect(new float[]{15,5},0));
+        mPaint.setPathEffect(new DashPathEffect(new float[]{15, 5}, 0));
         return mPaint;
     }
+
     /**
      * 显示半透明引导图
      */
@@ -252,15 +262,15 @@ public class GuideUserView extends RelativeLayout implements ViewTreeObserver.On
                     return;
                 sp.edit().putBoolean(viewID, true).apply();
             }
-            addRootView();
+            addGuideView();
         } catch (Throwable ignored) {
         }
     }
+
     /**
      * 实例化画笔添加蒙层
-     * @return
      */
-    public void addRootView() {
+    public void addGuideView() {
         // 保留未被源像素覆盖的目标像素。*丢弃被源像素覆盖的目标像素。丢弃所有*源像素
         mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
         setBackgroundColor(Color.TRANSPARENT);
@@ -278,40 +288,67 @@ public class GuideUserView extends RelativeLayout implements ViewTreeObserver.On
             startAnimation(enterAnimation);
         }
     }
-//    屏幕蒙层点击退出效果
+    /**
+     * 蒙层点击事件
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (isOnlyShowOne) {
-            isOnlyShowOne = false;
-            if (mClickListener != null){
-                mClickListener.onClick(this);
-                ((FrameLayout) ((Activity) mContent).getWindow().getDecorView()).removeView(this);
-                remove();
-
+        if (mOnClickCallback != null) {
+            if (mOnClickExit) {
+                removeGuideView();
+                mOnClickCallback.onClickedGuideView();
             }
         }
         return true;
     }
 
-    public void remove() {
+    /**
+     * 移除当前蒙层
+     */
+    public void removeGuideView() {
+        Log.v(TAG, "remove");
         if (exitAnimation != null) {
             exitAnimation.setAnimationListener(new AnimationListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animation animation) {
+                    mTargetView.getViewTreeObserver().removeOnGlobalLayoutListener(GuideUserView.this);
+                    GuideUserView.this.removeAllViews();
                     ((FrameLayout) ((Activity) mContent).getWindow().getDecorView()).removeView(GuideUserView.this);
                 }
             });
             startAnimation(exitAnimation);
         }
     }
+
+    /**
+     * 指定按钮点击事件
+     * @param v
+     */
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.tvConfirm:
+                if (mOnClickCallback != null) {
+                    if (!mOnClickExit) {
+                        mOnClickCallback.onClickBtView();
+                        System.out.println("执行12312312312312312");
+                        removeGuideView();
+                    }
+                }
+                break;
+        }
+    }
+
     /**
      * 目标View和自定义布局等参数实体
      */
     public static class Builder {
-        static GuideUserView guideUserView;
+        GuideUserView guideUserView;
 
         public Builder(Context context) {
-            guideUserView=new GuideUserView(context);
+            if (guideUserView==null){
+                guideUserView = new GuideUserView(context);
+            }
             guideUserView.mContent = context;
         }
 
@@ -360,17 +397,8 @@ public class GuideUserView extends RelativeLayout implements ViewTreeObserver.On
         }
 
         /**
-         //         * 设置点击事件
-         * @param mIntercept
-         * @return
-         */
-        public Builder setIntercpt(boolean mIntercept) {
-            guideUserView.mIntercept = mIntercept;
-            return this;
-        }
-
-        /**
          * 设置高亮view大小
+         *
          * @param mTargetSize
          * @return
          */
@@ -391,6 +419,7 @@ public class GuideUserView extends RelativeLayout implements ViewTreeObserver.On
             guideUserView.round = round;
             return this;
         }
+
         /**
          * 是否只显示一次
          */
@@ -400,30 +429,23 @@ public class GuideUserView extends RelativeLayout implements ViewTreeObserver.On
         }
 
         /**
-         * 是否只显示一次
+         * 设置图文混排
          */
         public Builder setSpannableName(SpannableString spannableName) {
-            guideUserView.spannableName = spannableName;
+            guideUserView.mSpannableName = spannableName;
             return this;
         }
 
-        public Builder setEnterAnimation(Animation enterAnimation){
-            guideUserView.enterAnimation=enterAnimation;
+        public Builder setEnterAnimation(Animation enterAnimation) {
+            guideUserView.enterAnimation = enterAnimation;
             return this;
         }
-        public Builder setExitAnimation(Animation exitAnimation){
-            guideUserView.exitAnimation=exitAnimation;
+
+        public Builder setExitAnimation(Animation exitAnimation) {
+            guideUserView.exitAnimation = exitAnimation;
             return this;
         }
-        /**
-         * 蒙层点击事件回调
-         * @param onClickListener
-         * @return
-         */
-        public Builder setOnClickListener(OnClickListener onClickListener) {
-            guideUserView.mClickListener = onClickListener;
-            return this;
-        }
+
         /**
          * 显示蒙层引导
          */
@@ -431,7 +453,38 @@ public class GuideUserView extends RelativeLayout implements ViewTreeObserver.On
             guideUserView.show();
         }
 
+        /**
+         * 按钮点击退出
+         *
+         * @param onclickExit
+         * @return
+         */
+        public Builder setOnclickExit(boolean onclickExit) {
+            guideUserView.mOnClickExit = onclickExit;
+            return this;
+        }
 
+        /**
+         * 蒙层点击事件回调
+         *
+         * @param callback
+         * @return
+         */
+        public Builder setOnclickListener(OnClickCallback callback) {
+            guideUserView.mOnClickCallback = callback;
+            return this;
+        }
+
+        /**
+         * 蒙层点击事件回调
+         *
+         * @param onClickListener
+         * @return
+         */
+        public Builder setOnClickListener(OnClickListener onClickListener) {
+            guideUserView.mClickListener = onClickListener;
+            return this;
+        }
     }
 
     public enum Direction { // 相对于目标View的方位
@@ -439,6 +492,14 @@ public class GuideUserView extends RelativeLayout implements ViewTreeObserver.On
     }
 
     public enum Shape { // 目标View的高亮圆圈形状: 圆形，椭圆，圆角矩形,虚线矩形
-        CIRCULAR, ELLIPSE, RECTANGULAR,ROUND_RECTANGLE_DASHGAP
+        CIRCULAR, ELLIPSE, RECTANGULAR, ROUND_RECTANGLE_DASHGAP
+    }
+
+    /**
+     * GuideUserView点击事件回调
+     */
+    public interface OnClickCallback {
+        void onClickedGuideView();
+        void onClickBtView();
     }
 }
